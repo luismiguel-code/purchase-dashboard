@@ -71,11 +71,7 @@ A detailed E2E test plan is outlined in `ARCHITECTURE.md`.
 
 ## TODOs for Future Work
 
-- Implement `Users` and `Settings` components.
-- Add actual save/update logic to `TaskService` (currently logs to console).
-- Implement task deletion functionality.
-- Enhance responsiveness for different screen sizes (e.g., card view for smaller screens).
-- Improve accessibility with more comprehensive ARIA attributes and keyboard navigation.
-- Add error and empty states for the task list.
-- Implement a more robust state management solution if the application scales further (e.g., NgRx or NGXS for complex global state).
-- Implement performance optimizations (e.g., lazy loading modules).
+
+- Implement real services using REST API for task CRUD operations.
+- Add a new user administration page.
+- Add a new configuration page.
