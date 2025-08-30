@@ -1,0 +1,23 @@
+.full-width {
+  width: 100%;
+}
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
+.form-column {
+  flex: 1;
+}
+
+mat-chip-grid {
+  width: 100%;
+}
