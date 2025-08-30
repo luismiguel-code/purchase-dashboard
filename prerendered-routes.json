@@ -1,0 +1,8 @@
+{
+  "routes": {
+    "/purchase-dashboard": {},
+    "/purchase-dashboard/settings": {},
+    "/purchase-dashboard/tasks": {},
+    "/purchase-dashboard/users": {}
+  }
+}

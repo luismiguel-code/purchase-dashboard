@@ -1,0 +1,1 @@
+import{Jb as n,Kb as o,fb as s,hc as r}from"./chunk-PPZL37I2.js";var p=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=s({type:t,selectors:[["app-users"]],decls:2,vars:0,template:function(e,a){e&1&&(n(0,"p"),r(1,"users works!"),o())},encapsulation:2})};export{p as UsersComponent};
