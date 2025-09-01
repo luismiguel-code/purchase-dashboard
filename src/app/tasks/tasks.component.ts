@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, signal, computed, effect } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, signal, computed, effect, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -12,7 +12,8 @@ import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TaskService } from '../core/services/task.service';
 import { Task } from '../core/data/models';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { TaskFormComponent } from './task-form/task-form.component';
 
 @Component({
@@ -35,7 +36,7 @@ import { TaskFormComponent } from './task-form/task-form.component';
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.scss']
 })
-export class TasksComponent implements AfterViewInit {
+export class TasksComponent implements AfterViewInit, OnDestroy {
   displayedColumns: string[] = ['uid', 'title', 'status', 'priority', 'dueDate', 'assignee', 'tags', 'actions'];
   dataSource = new MatTableDataSource<Task>([]);
   statuses = computed(() => [...new Set(this.taskService.tasks().tasks.map(task => task.status))]);
@@ -48,6 +49,8 @@ export class TasksComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(private taskService: TaskService, public dialog: MatDialog) {
     effect(() => {
       this.dataSource.data = this.taskService.tasks().tasks;
@@ -55,13 +58,15 @@ export class TasksComponent implements AfterViewInit {
 
     this.filterControl.valueChanges.pipe(
       debounceTime(300),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      takeUntil(this.ngUnsubscribe)
     ).subscribe(value => {
       this.applyFilter(value || '', this.statusFilterControl.value || '');
     });
 
     this.statusFilterControl.valueChanges.subscribe(value => {
       this.applyFilter(this.filterControl.value || '', value || '');
+      takeUntil(this.ngUnsubscribe)
     });
   }
 
@@ -84,6 +89,11 @@ export class TasksComponent implements AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   openTaskForm(task?: Task): void {
