@@ -50,7 +50,7 @@ It demonstrates how to structure an Angular app for scale, apply a design system
 To run the application locally, execute the following command:
 
 ```bash
-ng serve
+npm start / ng serve
 ```
 
 Open your browser and navigate to `http://localhost:4200/`.
