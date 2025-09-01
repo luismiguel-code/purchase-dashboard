@@ -1,0 +1,84 @@
+<h2 mat-dialog-title>{{ data.task ? 'Edit Task' : 'Create Task' }}</h2>
+<mat-dialog-content [formGroup]="taskForm">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title">
+    @if(taskForm.get('title')?.hasError('required')) {
+      <mat-error>Title is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-column">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        @for (status of statuses(); track status) {
+          <mat-option [value]="status">{{ status }}</mat-option>
+        }
+      </mat-select>
+      @if(taskForm.get('status')?.hasError('required')) {
+        <mat-error>Status is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-column">
+      <mat-label>Priority</mat-label>
+      <mat-select formControlName="priority">
+        @for (priority of priorities(); track priority) {
+          <mat-option [value]="priority">{{ priority }}</mat-option>
+        }
+      </mat-select>
+      @if(taskForm.get('priority')?.hasError('required')) {
+        <mat-error>Status is required</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-column">
+      <mat-label>Due Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dueDate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      
+      @if(taskForm.get('dueDate')?.hasError('required')) {
+        <mat-error>Due Date is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-column">
+      <mat-label>Assignee</mat-label>
+      <mat-select formControlName="assignee">
+        <mat-option [value]="null">Unassigned</mat-option>
+        
+        @for (user of users(); track user) {
+          <mat-option [value]="user.id">{{ user.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Tags</mat-label>
+    <mat-chip-grid #chipGrid aria-label="Enter tags">
+      @for (tag of taskForm.get('tags')?.value; track tag) {
+        <mat-chip-row (removed)="removeTag(tag)">
+          {{tag}}
+          <button matChipRemove [attr.aria-label]="'remove ' + tag">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+      <input placeholder="New tag..." [matChipInputFor]="chipGrid" (matChipInputTokenEnd)="addTag($event)">
+    </mat-chip-grid>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="taskForm.invalid">Save</button>
+</mat-dialog-actions>

@@ -1,0 +1,37 @@
+.tasks-container {
+  padding: 20px;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-input,
+.filter-select {
+  flex: 1 1 auto;
+  min-width: 200px;
+}
+
+.create-task-button {
+  margin-left: auto;
+}
+
+.responsive-table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-column-tags {
+  flex: 0 0 150px;
+}
+
+.mat-column-actions {
+  flex: 0 0 100px;
+}
