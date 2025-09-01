@@ -6,15 +6,13 @@ import { of } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
-import { signal } from '@angular/core'; // Ensure signal import is present
-import 'zone.js/testing'; // Re-add this import
-
-import { Task, User } from '../core/data/models'; // Import Task and User interfaces
+import { signal } from '@angular/core'; 
+import 'zone.js/testing'; 
 
 describe('TasksComponent', () => {
   let component: TasksComponent;
   let fixture: ComponentFixture<TasksComponent>;
-  let mockTaskService: any; // Using any for initial flexibility
+  let mockTaskService: any; 
   let mockMatDialog: any;
 
   beforeEach(fakeAsync(async () => {
@@ -58,22 +56,22 @@ describe('TasksComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        TasksComponent, // Import the standalone component
+        TasksComponent,
         BrowserAnimationsModule,
-        MatDialogModule, // Add MatDialogModule here
-        ReactiveFormsModule // Add ReactiveFormsModule here
+        MatDialogModule, 
+        ReactiveFormsModule
       ],
       providers: [
-        { provide: TaskService, useValue: mockTaskService }, // Provide the mock object directly
+        { provide: TaskService, useValue: mockTaskService },
         { provide: MatDialog, useValue: mockMatDialog }
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TasksComponent);
     component = fixture.componentInstance;
-    // mockTaskService is already defined by useValue, no need to inject again
+   
     fixture.detectChanges();
-    tick(); // Add tick() here to process initial effects and computed values
+    tick(); 
   }));
 
   it('should create', () => {
